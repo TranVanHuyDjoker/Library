@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>List Member</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+
+    <h1 style="text-align: center">List all Member</h1>
+    <br/>
+    <!--            <form>-->
+    <!--                <div class="form-group" style="text-align: center">-->
+    <!--                    <input type="text" name="keyword" placeholder="Search by name or email">-->
+    <!--                    <button type="submit">Search</button>-->
+    <!--                </div>-->
+    <!--            </form>-->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Bordered Table</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-bordered">
+
+                        <thead>
+                        <tr>
+                            <th>Member id</th>
+                            <th>name</th>
+                            <th>email</th>
+                            <th>major</th>
+                            <th>expired</th>
+                            <th>photo</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="memberDTO : ${memberDTOList}" th:id="${'book'+memberDTO.id}">
+                            <td th:utext="${memberDTO.id}"></td>
+                            <td th:utext="${memberDTO.name}"></td>
+                            <td th:utext="${memberDTO.mail}"></td>
+                            <td th:utext="${memberDTO.major}"></td>
+                            <td th:utext="${memberDTO.expired}"></td>
+                            <td style="width: 8%; overflow: hidden">
+                                <img style="width: 100%"
+                                     th:src="${'http://localhost:9000/librarycrud/'+memberDTO.avatar}" alt="">
+                            </td>
+
+                            <td>
+                                <a class="btn btn-danger"
+                                   th:onclick="'handleSubmit(\''+ ${memberDTO.id} +'\');'">Delete</a>
+                                <a class="btn btn-warning"
+                                   th:href="@{'/api/v1/member/update?id='+ ${memberDTO.id}}">Edit</a>
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <!--                            <div class="container">-->
+                    <p> total: [[${totalItems}]]</p>
+
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+
+                            <li class="page-item"><a class="page-link"
+                                                     th:href="@{${((currentPage)==1)?'':('?page='+(currentPage-1))}}">Previous</a>
+                            </li>
+
+                            <li th:each="i:${#numbers.sequence(1,totalPages)}" class="page-item"
+                                th:classappend="${currentPage==i ? 'active' : '' }">
+                                <a class="page-link" th:href="@{'?page='+${i}}">[[${i}]]</a></li>
+
+                            <li class="page-item"><a class="page-link"
+                                                     th:href="@{${((currentPage)==totalPages)?'':('?page='+(currentPage+1))}}">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--                            </div>-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+
+        function handleSubmit(id) {
+            if (confirm("Bạn chắc chắn muốn xóa mã này này chứ?")) {
+                console.log(id)
+                $.ajax({
+                    url: `${baseUrl}/api/v1/delete/members/${id}`,
+                    type: "DELETE",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                }).done(function (xhr) {
+                    console.log(xhr);
+                    $("#alert").empty();
+                    $("#alert").append(`xoa thành công`)
+                    removeTableRow(id)
+                }).fail(function (xhr) {
+                    console.log(xhr);
+                    $("#alert").empty();
+                    $("#alert").append(`${xhr.responseJSON.message}`)
+                })
+            }
+        }
+
+        function removeTableRow(id) {
+            $("#book" + id).remove();
+        }
+
+    </script>
+
+</div>
+</body>
+</html>

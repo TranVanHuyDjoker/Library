@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Member</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Bordered Table</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Book id</th>
+                            <th>Subject</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>publisher</th>
+                            <th>Copyright</th>
+                            <th>Edittion</th>
+                            <th>Pages</th>
+                            <!--                                    <th>NumberOfBooks</th>-->
+                            <th>Library</th>
+                            <th>Available</th>
+                            <th>Action</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="book : ${books}" th:id="${'book'+book.getBookId()}">
+                            <td th:utext="${book.getBookId()}">...</td>
+                            <td th:utext="${book.getBookSubject()}">...</td>
+                            <td th:utext="${book.getBookTitle()}">...</td>
+                            <td th:utext="${book.getAuthorName()}">...</td>
+                            <td th:utext="${book.getPublisherName()}">...</td>
+                            <td th:utext="${book.getCopyRight()}">...</td>
+                            <td th:utext="${book.getEdition()}">...</td>
+                            <td th:utext="${book.getPages()}">...</td>
+                            <!--                                    <td th:utext="${book.getNumberOfBook()}">...</td>-->
+                            <td th:utext="${book.getLibrary()}">...</td>
+                            <td th:if="${#strings.toString(book.getBookStatus())} == 'AVAILABLE'">
+                                <input type="checkbox" checked/>
+                            </td>
+                            <td th:unless="${#strings.toString(book.getBookStatus())} == 'AVAILABLE'">
+                                <input type="checkbox"/>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" th:onclick="'handleSubmit(\''+ ${book.getBookId()} +'\');'">Delete</a>
+                                <a class="btn btn-warning" th:href="@{'/api/v1/books/update?id='+ ${book.getBookId()}}">Edit</a>
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- /.card-body -->
+
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+
+        function handleSubmit(id) {
+            if (confirm("Bạn chắc chắn muốn xóa mã này này chứ?")) {
+                console.log(id)
+                $.ajax({
+                    url: `${baseUrl}/api/v1/delete/books/${id}`,
+                    type: "DELETE",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                }).done(function (xhr) {
+                    console.log(xhr);
+                    $("#alert").empty();
+                    $("#alert").append(`xóa thành công`)
+                    removeTableRow(id)
+                }).fail(function (xhr) {
+                    console.log(xhr);
+                    $("#alert").empty();
+                    $("#alert").append(`${xhr.responseJSON.message}`)
+                })
+            }
+        }
+
+        function removeTableRow(id) {
+            $("#book" + id).remove();
+        }
+
+    </script>
+
+</div>
+</body>
+</html>
