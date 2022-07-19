@@ -21,46 +21,6 @@ public class MinioService {
     @Value("${minio.bucket.name}")
     private String bucketName;
 
-//    public List<PhotoDTO> getListObjects() {
-//        List<PhotoDTO> objects = new ArrayList<>();
-//        try {
-//            Iterable<Result<Item>> result = minioClient.listObjects(ListObjectsArgs.builder()
-//                    .bucket(bucketName)
-//                    .recursive(true)
-//                    .build());
-//            for (Result<Item> item : result) {
-//                objects.add(PhotoDTO.builder()
-////                        .photoUrl(item.get().objectName())
-//                        .photoPath(getPreSignedUrl(item.get().objectName()))
-//                        .build());
-//            }
-//            return objects;
-//        } catch (Exception e) {
-//            log.error("Happened error when get list objects from minio: ", e);
-//        }
-//
-//        return objects;
-//    }
-//
-//    private String getPreSignedUrl(String filename) {
-//        return "http://localhost:8080" + "/library/".concat(filename);
-//    }
-//
-//    public InputStream getObject(String filename) {
-//        InputStream stream;
-//        try {
-//            stream = minioClient.getObject(GetObjectArgs.builder()
-//                    .bucket(bucketName)
-//                    .object(filename)
-//                    .build());
-//        } catch (Exception e) {
-//            log.error("Happened error when get list objects from minio: ", e);
-//            return null;
-//        }
-//
-//        return stream;
-//    }
-
     public void putObject(String filename, InputStream inputStream, long size) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         minioClient.putObject(
                 PutObjectArgs.builder().bucket(bucketName).object(filename).stream(inputStream, size, -1)

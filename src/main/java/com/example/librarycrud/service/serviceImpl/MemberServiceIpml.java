@@ -52,12 +52,11 @@ public class MemberServiceIpml implements MemberService {
     @Override
     @Transactional
     public MemberDTO creatMember(MemberRequest memberRequest) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-        String img_name = memberRequest.getFile().getOriginalFilename();
-        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
+        String imgName = memberRequest.getFile().getOriginalFilename();
+        String[] parts = imgName.split("\\.(?=[^\\.]+$)");
         memberRequest.setAvatar(uuidAsString + "." + parts[1]);
 
         Member member = mapper.map(memberRequest, Member.class);
@@ -87,20 +86,17 @@ public class MemberServiceIpml implements MemberService {
                 log.error("gửi mail lỗi!", exp);
             }
         });
-
-
         return mapper.map(member, MemberDTO.class);
     }
 
     @Override
     @Transactional
     public MemberDTO updateMember(Long id, MemberRequest memberRequest) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-        String img_name = memberRequest.getFile().getOriginalFilename();
-        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
+        String imgName = memberRequest.getFile().getOriginalFilename();
+        String[] parts = imgName.split("\\.(?=[^\\.]+$)");
         memberRequest.setAvatar(uuidAsString + "." + parts[1]);
 
         Member member = memberRepository.findById(id).orElseThrow(() -> new BadRequestException("Member not found"));

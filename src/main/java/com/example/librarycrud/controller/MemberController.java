@@ -63,25 +63,10 @@ public class MemberController {
 
     @PostMapping("member/add")
     public ResponseEntity<?> doAdd(@ModelAttribute @Valid MemberRequest memberRequest, BindingResult bindingResult, ModelMap modelMap) throws BindException, ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        System.out.println("ao controller");
-////        modelMap.addAttribute("urlMinio",minioUrl+"/"+bucket);
+
         if (bindingResult.hasErrors()) {
             throw new BindException(bindingResult);
         }
-//        memberRequest.setAvatar("avatar"+System.currentTimeMillis()+".jpg"); //?
-//        UUID uuid = UUID.randomUUID();
-//        String uuidAsString = uuid.toString();
-//        String img_name = memberRequest.getFile().getOriginalFilename();
-//        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
-//        memberRequest.setAvatar(uuidAsString + "." + parts[1]);
-//        MemberDTO memberDTO=null;
-//        try {
-//            memberDTO=memberService.creatMember(memberRequest);
-//        }catch (Exception exception){
-//            exception.printStackTrace();
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(memberDTO);
-
         return ResponseEntity.status(HttpStatus.OK).body(memberService.creatMember(memberRequest));
     }
 
@@ -97,13 +82,6 @@ public class MemberController {
 
     @PostMapping("member/update")
     public ResponseEntity<?> doUpdate(@RequestParam Long id, @ModelAttribute @Valid MemberRequest memberRequest) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        memberRequest.setAvatar("1avatar"+System.currentTimeMillis()+".jpg");
-
-//        UUID uuid = UUID.randomUUID();
-//        String uuidAsString = uuid.toString();
-//        String img_name = memberRequest.getFile().getOriginalFilename();
-//        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
-//        memberRequest.setAvatar(uuidAsString + "." + parts[1]);
 
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(id, memberRequest));
     }
@@ -111,7 +89,6 @@ public class MemberController {
     @DeleteMapping("/delete/members/{id}")
     public ResponseEntity<MemberDTO> deleteBook(@PathVariable Long id) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         return ResponseEntity.ok(memberService.deleteMember(id));
-
 
     }
 
