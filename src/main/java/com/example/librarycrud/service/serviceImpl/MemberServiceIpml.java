@@ -52,7 +52,6 @@ public class MemberServiceIpml implements MemberService {
     @Override
     @Transactional
     public MemberDTO creatMember(MemberRequest memberRequest) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
@@ -87,15 +86,12 @@ public class MemberServiceIpml implements MemberService {
                 log.error("gửi mail lỗi!", exp);
             }
         });
-
-
         return mapper.map(member, MemberDTO.class);
     }
 
     @Override
     @Transactional
     public MemberDTO updateMember(Long id, MemberRequest memberRequest) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
