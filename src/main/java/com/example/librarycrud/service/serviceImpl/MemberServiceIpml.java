@@ -55,8 +55,8 @@ public class MemberServiceIpml implements MemberService {
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-        String imgName = memberRequest.getFile().getOriginalFilename();
-        String[] parts = imgName.split("\\.(?=[^\\.]+$)");
+        String img_name = memberRequest.getFile().getOriginalFilename();
+        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
         memberRequest.setAvatar(uuidAsString + "." + parts[1]);
 
         Member member = mapper.map(memberRequest, Member.class);
@@ -95,8 +95,8 @@ public class MemberServiceIpml implements MemberService {
 
         UUID uuid = UUID.randomUUID();
         String uuidAsString = uuid.toString();
-        String imgName = memberRequest.getFile().getOriginalFilename();
-        String[] parts = imgName.split("\\.(?=[^\\.]+$)");
+        String img_name = memberRequest.getFile().getOriginalFilename();
+        String[] parts = img_name.split("\\.(?=[^\\.]+$)");
         memberRequest.setAvatar(uuidAsString + "." + parts[1]);
 
         Member member = memberRepository.findById(id).orElseThrow(() -> new BadRequestException("Member not found"));
